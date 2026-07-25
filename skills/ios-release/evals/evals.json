@@ -1,0 +1,23 @@
+{
+  "skill_name": "ios-release",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "次のiOS版をTestFlightへ上げ、リリースノートを反映して審査提出まで進めたい",
+      "expected_output": "現在地を読み取り、testflight、appstore-info、appstore-releaseの必要な段階を順番に提示する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 2,
+      "prompt": "すでにTestFlightで処理済みなので、App Storeの審査にだけ出して",
+      "expected_output": "完了済みのビルド作成とメタデータ更新を繰り返さず、appstore-releaseへ進む",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 3,
+      "prompt": "スクリーンショットだけ新しい端末サイズに差し替えたい",
+      "expected_output": "このプラグインの対象外であることを案内し、リリース工程を開始しない",
+      "files": ["fixtures/sample-expo-app"]
+    }
+  ]
+}

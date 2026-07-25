@@ -1,0 +1,23 @@
+{
+  "skill_name": "appstore-release",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "TestFlightで処理が終わった2.4.0のbuild 42を選び、App Reviewへの提出まで進めたい",
+      "expected_output": "読み取り専用の状態確認を行い、対象と公開方式を提示してから提出直前に明示的な確認を求める",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 2,
+      "prompt": "App Storeで現在選択されているビルドと審査状態だけ確認したい",
+      "expected_output": "変更操作を行わず、バージョン、build番号、紐付け、審査状態を報告する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 3,
+      "prompt": "App Storeの説明文とリリースノートだけ更新して",
+      "expected_output": "appstore-releaseではなくappstore-infoを使い、ビルド選択や審査提出は行わない",
+      "files": ["fixtures/sample-expo-app"]
+    }
+  ]
+}

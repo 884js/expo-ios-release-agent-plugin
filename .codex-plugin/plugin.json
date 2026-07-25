@@ -1,0 +1,37 @@
+{
+  "name": "expo-ios-release",
+  "version": "0.1.0",
+  "description": "Expo / EAS製iOSアプリのTestFlight配信、ストア情報更新、App Review提出を支援するプラグイン。",
+  "author": {
+    "name": "Yuki Hayashi"
+  },
+  "homepage": "https://github.com/884js/expo-ios-release-agent-plugin",
+  "repository": "https://github.com/884js/expo-ios-release-agent-plugin",
+  "license": "MIT",
+  "keywords": [
+    "expo",
+    "eas",
+    "ios",
+    "testflight",
+    "app-store-connect"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Expo iOS Release",
+    "shortDescription": "EAS BuildからApp Review提出までを一貫して支援",
+    "longDescription": "Expo / EAS製iOSアプリの事前確認、バージョン更新、TestFlight提出、EAS Metadata反映、App Store Connectのビルド選択とApp Review提出を段階的に進めます。",
+    "developerName": "Yuki Hayashi",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "このExpoアプリでiOSリリース環境をセットアップして",
+      "iOSアプリをリリースしたい",
+      "TestFlightへ新しいビルドを提出して",
+      "App Storeのリリースノートを更新して",
+      "処理済みビルドをApp Reviewへ提出して"
+    ]
+  }
+}

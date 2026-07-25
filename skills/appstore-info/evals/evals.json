@@ -1,0 +1,23 @@
+{
+  "skill_name": "appstore-info",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "今回の変更からリリースノートを作り、App Store Connectへ反映して",
+      "expected_output": "ユーザーに見える差分だけで下書きを作り、確認後にEAS Metadataを実行する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 2,
+      "prompt": "store.config.jsonの内容を変えずに、現在のメタデータをpushして",
+      "expected_output": "影響項目と対象バージョンを提示し、同意後にpushする",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 3,
+      "prompt": "新しいiOSビルドをTestFlightへ配信して",
+      "expected_output": "appstore-infoではなくtestflightを使い、App Store情報のpushを行わない",
+      "files": ["fixtures/sample-expo-app"]
+    }
+  ]
+}

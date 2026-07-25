@@ -1,0 +1,11 @@
+{
+  "name": "release-lab-journal-fixture",
+  "version": "2.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "node --check scripts/check-config.mjs",
+    "lint": "node scripts/check-config.mjs",
+    "test": "node --test tests/config.test.mjs"
+  }
+}

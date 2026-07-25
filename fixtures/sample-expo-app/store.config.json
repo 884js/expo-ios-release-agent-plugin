@@ -1,0 +1,21 @@
+{
+  "configVersion": 0,
+  "apple": {
+    "version": "2.4.0",
+    "release": {
+      "automaticRelease": true
+    },
+    "info": {
+      "ja": {
+        "title": "記録サンプル",
+        "subtitle": "短い記録を残す検証用アプリ",
+        "releaseNotes": "新機能\n・週ごとの振り返り表示を追加\n\n改善\n・記録画面の読みやすさを調整"
+      },
+      "en-US": {
+        "title": "Journal Sample",
+        "subtitle": "A fixture for release workflow tests",
+        "releaseNotes": "New\n- Added a weekly reflection view"
+      }
+    }
+  }
+}

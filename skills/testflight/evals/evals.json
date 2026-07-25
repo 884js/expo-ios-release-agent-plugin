@@ -1,0 +1,23 @@
+{
+  "skill_name": "testflight",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "パッチバージョンへ上げて、iOSビルドをTestFlightへ自動提出して",
+      "expected_output": "検証、バージョンとリリースノートの確認、実行同意を経てEAS Buildと自動提出を行う",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 2,
+      "prompt": "同じバージョンのまま検証用のiOSビルドだけ作りたい",
+      "expected_output": "バージョンとメタデータを変更せず、ビルドのみの実行内容を確認する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 3,
+      "prompt": "処理済みのビルドをApp Storeの審査へ提出して",
+      "expected_output": "testflightではなくappstore-releaseを使い、新規ビルドを作らない",
+      "files": ["fixtures/sample-expo-app"]
+    }
+  ]
+}

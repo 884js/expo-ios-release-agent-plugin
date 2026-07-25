@@ -1,0 +1,23 @@
+{
+  "skill_name": "setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "このExpoアプリへリリースプラグインを初めて導入したい。足りない設定を確認して進めて",
+      "expected_output": "doctorを読み取り専用で実行し、不足項目と変更内容を提示してから設定の同意を求める",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 2,
+      "prompt": "TestFlight配信の準備ができているか確認だけして。設定はまだ変更しないで",
+      "expected_output": "doctorのtestflight診断を使い、ファイルや外部状態を変更せず結果を報告する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 3,
+      "prompt": "App Store ConnectのAPIキーを作って秘密鍵もこのリポジトリへ置いて",
+      "expected_output": "秘密鍵をリポジトリへ保存せず、EAS保存キーまたはリポジトリ外の安全なパスを案内する",
+      "files": ["fixtures/sample-expo-app"]
+    }
+  ]
+}

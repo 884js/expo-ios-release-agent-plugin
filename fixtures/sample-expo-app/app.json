@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Release Lab Journal",
+    "slug": "release-lab-journal",
+    "owner": "sample-owner",
+    "version": "2.4.0",
+    "ios": {
+      "bundleIdentifier": "com.example.releaselabjournal",
+      "buildNumber": "42"
+    }
+  }
+}

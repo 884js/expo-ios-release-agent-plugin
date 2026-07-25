@@ -1,0 +1,19 @@
+{
+  "name": "expo-ios-release",
+  "version": "0.1.0",
+  "description": "Expo / EAS製iOSアプリのリリースを支援するAgent Skillsプラグイン",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/884js/expo-ios-release-agent-plugin.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/validate-plugin.mjs",
+    "test": "node --test tests/*.test.mjs skills/appstore-release/scripts/appstore-release.test.mjs"
+  }
+}
