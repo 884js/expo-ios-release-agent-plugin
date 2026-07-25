@@ -49,6 +49,12 @@ EAS Metadataを使う場合に必要です。`eas.json`の`metadataPath`で別�
 
 対象ロケールは`IOS_RELEASE_LOCALE`で変更できます。既定値は`ja`です。
 
+### appstore-screenshots.json
+
+App Store掲載画像を撮影する場合に必要です。端末区分、Simulator機種、ロケール、向き、Maestro Flowを設定します。EAS Metadataへ書き出す場合は、必要に応じて`store.config.json`のロケールも指定します。
+
+撮影にはmacOS、Xcode Command Line Tools、起動可能なiOS Simulator、Maestro CLI 2.3.0以上、Simulator用アプリビルドが必要です。TestFlight用ビルドはSimulatorへインストールできません。
+
 ## App Store Connect認証
 
 次の優先順位で利用します。

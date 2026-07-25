@@ -37,13 +37,20 @@ test('projectスコープでプロジェクト内にスキルを配置する', a
 
   await runInstaller(project);
 
-  const destination = path.join(project, '.agents', 'skills', 'setup');
-  const stats = await lstat(destination);
-  assert.equal(stats.isSymbolicLink(), true);
-  assert.equal(
-    path.resolve(path.dirname(destination), await readlink(destination)),
-    path.join(root, 'skills', 'setup'),
-  );
+  for (const skillName of ['setup', 'appstore-screenshots']) {
+    const destination = path.join(
+      project,
+      '.agents',
+      'skills',
+      skillName,
+    );
+    const stats = await lstat(destination);
+    assert.equal(stats.isSymbolicLink(), true);
+    assert.equal(
+      path.resolve(path.dirname(destination), await readlink(destination)),
+      path.join(root, 'skills', skillName),
+    );
+  }
 });
 
 test('projectスコープで親ディレクトリのシンボリックリンクを拒否する', async () => {

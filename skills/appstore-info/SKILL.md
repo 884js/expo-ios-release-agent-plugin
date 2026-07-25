@@ -32,6 +32,8 @@ node <plugin-root>/scripts/doctor.mjs \
 
 ファイルが存在しなければ、勝手に新規作成せずユーザーへ必要な設定を案内する。
 
+スクリーンショットの撮影、検証、EAS Metadata用ディレクトリへの書き出しが必要な場合は、先に`appstore-screenshots`スキルを使う。
+
 ## 2. 影響範囲を確認する
 
 設定ファイルを読み、次を提示する。
@@ -40,7 +42,7 @@ node <plugin-root>/scripts/doctor.mjs \
 - 更新対象のロケール
 - リリースノート
 - 説明文、プロモーションテキスト、キーワードなど変更される項目
-- 審査連絡先やスクリーンショットなど、意図せず更新される可能性がある項目
+- 審査連絡先やスクリーンショットセットなど、意図せず更新される可能性がある項目
 
 `app.json`の`expo.version`とApple側のバージョンが異なる場合は停止し、どちらを正とするか確認する。
 
@@ -95,3 +97,4 @@ https://appstoreconnect.apple.com/apps/{appId}/appstore
 - ビルド作成やApp Review提出を行わない
 - 認証情報をログへ出さない
 - ユーザーの同意なく設定ファイルを編集・pushしない
+- スクリーンショット生成時の同意をEAS Metadataのpush同意として扱わない

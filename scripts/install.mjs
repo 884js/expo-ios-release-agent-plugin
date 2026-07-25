@@ -23,6 +23,7 @@ const skillNames = [
   'setup',
   'ios-release',
   'testflight',
+  'appstore-screenshots',
   'appstore-info',
   'appstore-release',
 ];

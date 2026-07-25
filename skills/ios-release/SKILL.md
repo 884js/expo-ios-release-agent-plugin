@@ -1,6 +1,6 @@
 ---
 name: ios-release
-description: Expo / EAS製iOSアプリのリリース全体を進行する。「リリースしよう」「App Storeへ新しいバージョンを出したい」「TestFlightから審査提出まで進めて」など、複数段階にまたがるiOSリリースを依頼された時は使う。TestFlightだけ、メタデータだけ、審査提出だけの依頼では対応する個別スキルを使う。
+description: Expo / EAS製iOSアプリのリリース全体を進行する。「リリースしよう」「App Storeへ新しいバージョンを出したい」「TestFlightから審査提出まで進めて」など、複数段階にまたがるiOSリリースを依頼された時は使う。TestFlight、スクリーンショット、メタデータ、審査提出の一部だけの依頼では対応する個別スキルを使う。
 compatibility: Node.js 18以上、EAS CLI、Expoプロジェクト、Apple Developer Programが必要。
 ---
 
@@ -33,11 +33,14 @@ node <plugin-root>/scripts/doctor.mjs \
 - `app.json`のバージョン、build番号、Bundle ID
 - `eas.json`のbuild／submitプロファイル
 - `store.config.json`のバージョンとリリースノート
+- App Storeスクリーンショットの撮影設定と検証済み出力
 - Gitの未コミット差分
 - EASの直近iOSビルドと提出状態
 - App Store Connectの対象バージョン、処理済みビルド、審査状態
 
 App Store Connectの確認には`appstore-release`スキルのスクリプトを読み取り専用で使う。
+
+スクリーンショットの撮影が必要な場合は、`appstore-screenshots`の`--check`も実行する。既存出力を検証済みとして扱う前に、対象ディレクトリへ`--validate`を実行する。
 
 未コミット差分は勝手にコミットしない。リリース対象に含める必要がある場合は、変更内容を提示してユーザーへ判断を求める。
 
@@ -51,6 +54,7 @@ App Store Connectの確認には`appstore-release`スキルのスクリプトを
 - リリースノート更新の有無
 - 新規ビルドが必要か
 - メタデータ反映が必要か
+- スクリーンショットの撮影または差し替えが必要か
 - App Review提出が可能か
 
 外部状態を変える操作をまとめて提示し、開始前に同意を得る。ただし、App Review提出の直前にはバージョンとbuild番号を使って改めて確認する。
@@ -60,8 +64,9 @@ App Store Connectの確認には`appstore-release`スキルのスクリプトを
 次の順に進める。
 
 1. `testflight`: 事前検証、バージョン調整、EAS Build、TestFlight提出
-2. `appstore-info`: リリースノートなどのApp Store掲載情報反映
-3. `appstore-release`: 処理済みビルドの選択、App Review提出
+2. `appstore-screenshots`: 必要な場合だけ掲載画像を撮影・検証し、EAS Metadata用にローカル書き出し
+3. `appstore-info`: リリースノートやスクリーンショットなどのApp Store掲載情報反映
+4. `appstore-release`: 処理済みビルドの選択、App Review提出
 
 新しいビルドを作成した場合は、EAS BuildとEAS Submitの完了を確認する。Apple側でビルドが処理中の場合は、適度な間隔で状態を確認する。ユーザーが一連の完了を求めている時は、App Reviewへ提出できる状態になるまで追跡する。
 
@@ -81,6 +86,6 @@ App Store Connectのアプリページと、必要に応じてEASのビルド／
 ## 境界
 
 - TestFlightへの配信だけ: `testflight`
+- スクリーンショットの撮影と検証だけ: `appstore-screenshots`
 - App Store掲載情報の更新だけ: `appstore-info`
 - 処理済みビルドの審査提出だけ: `appstore-release`
-- スクリーンショット作成やアップロード: このプラグインの対象外

@@ -43,6 +43,7 @@ fixtureでは設定確認だけを行い、実環境への切り替えを案内�
 - 対象ロケール
 - EASログイン
 - App Store Connect API認証
+- スクリーンショット機能を使う場合はXcode、iOS Simulator、Maestro CLI
 
 ファイル変更、パッケージ導入、EASやAppleへの接続を分け、対象と影響を説明する。
 
@@ -93,6 +94,8 @@ node <plugin-root>/scripts/doctor.mjs \
 
 `READY`になるまで、不足項目を一つずつ解消する。同じ失敗を無制限に再試行しない。
 
+App Storeスクリーンショット機能を使う場合は、`appstore-screenshots`スキルのスクリプトも読み取り専用で実行し、Xcode、iOS Simulator、Maestro CLI、撮影設定を確認する。
+
 ## 6. 結果を報告する
 
 次を簡潔にまとめる。
@@ -101,6 +104,7 @@ node <plugin-root>/scripts/doctor.mjs \
 - App StoreバージョンとBundle ID
 - TestFlightの準備状態
 - App Store情報更新の準備状態
+- App Storeスクリーンショット撮影の準備状態
 - App Review提出の準備状態
 - ユーザー側で残っている操作
 

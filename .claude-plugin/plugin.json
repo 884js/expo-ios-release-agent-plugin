@@ -3,7 +3,7 @@
   "name": "expo-ios-release",
   "displayName": "Expo iOS Release",
   "version": "0.1.0",
-  "description": "Expo / EAS製iOSアプリのTestFlight配信、ストア情報更新、App Review提出を支援するプラグイン。",
+  "description": "Expo / EAS製iOSアプリのTestFlight配信、App Storeスクリーンショット撮影、ストア情報更新、App Review提出を支援するプラグイン。",
   "author": {
     "name": "Yuki Hayashi"
   },
@@ -15,6 +15,8 @@
     "eas",
     "ios",
     "testflight",
+    "maestro",
+    "app-store-screenshots",
     "app-store-connect"
   ],
   "skills": "./skills/"

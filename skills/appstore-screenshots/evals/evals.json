@@ -1,0 +1,29 @@
+{
+  "skill_name": "appstore-screenshots",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "日本語のApp Store掲載画像をiPhone向けに撮り直したい。トップ、入力、履歴の順で自動撮影して",
+      "expected_output": "設定とFlowから不足している撮影画面を整理し、fixtureではMaestroやxcrunを実行せずBLOCKEDを報告する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 2,
+      "prompt": "このフォルダにあるiOSの掲載画像がAppleの要件を満たすかだけ確認して",
+      "expected_output": "SimulatorやMaestroを起動せず対象区分を確認し、fixtureに掲載画像がないため検証対象の不足を報告する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 3,
+      "prompt": "スクリーンショットは揃っているので、App Store Connectへアップロードして",
+      "expected_output": "ローカル撮影を繰り返さず、アップロードはこのスキルの対象外と案内して外部反映を行わない",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 4,
+      "prompt": "検証済みの掲載画像をEAS Metadataで扱える場所へ整理して設定にも反映して",
+      "expected_output": "対象ロケール、表示タイプ、store.config.jsonの更新を提示して同意を求め、同意後はローカル書き出しだけを行ってeas metadata:pushは実行しない",
+      "files": ["fixtures/sample-expo-app"]
+    }
+  ]
+}

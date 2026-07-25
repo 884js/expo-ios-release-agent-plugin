@@ -16,7 +16,7 @@
     {
       "id": 3,
       "prompt": "スクリーンショットだけ新しい端末サイズに差し替えたい",
-      "expected_output": "このプラグインの対象外であることを案内し、リリース工程を開始しない",
+      "expected_output": "リリース全体を開始せずappstore-screenshotsで撮影・検証し、App Store Connectへのアップロードは対象外と案内する",
       "files": ["fixtures/sample-expo-app"]
     }
   ]

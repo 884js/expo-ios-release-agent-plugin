@@ -1,0 +1,7 @@
+appId: ${APP_ID}
+---
+- setOrientation: PORTRAIT
+- launchApp:
+    clearState: true
+- assertVisible: "Release Lab Journal"
+- takeScreenshot: 01-home

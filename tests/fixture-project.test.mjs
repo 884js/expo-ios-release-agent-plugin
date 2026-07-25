@@ -15,18 +15,21 @@ async function readJson(name) {
 }
 
 test('fixtureは外部操作を禁止した架空の設定だけを持つ', async () => {
-  const [marker, appConfig, easConfig, storeConfig] = await Promise.all([
-    readJson('.release-fixture.json'),
-    readJson('app.json'),
-    readJson('eas.json'),
-    readJson('store.config.json'),
-  ]);
+  const [marker, appConfig, easConfig, storeConfig, screenshotConfig] =
+    await Promise.all([
+      readJson('.release-fixture.json'),
+      readJson('app.json'),
+      readJson('eas.json'),
+      readJson('store.config.json'),
+      readJson('appstore-screenshots.json'),
+    ]);
 
   assert.equal(marker.fixtureOnly, true);
   assert.equal(marker.externalActionsAllowed, false);
   assert.equal(appConfig.expo.version, storeConfig.apple.version);
   assert.match(appConfig.expo.ios.bundleIdentifier, /^com\.example\./);
   assert.equal(easConfig.submit.testflight.ios.ascAppId, '0000000000');
+  assert.equal(screenshotConfig.targets[0].displayType, 'IPHONE_69');
 });
 
 test('fixture自身の検証コマンドが成功する', async () => {

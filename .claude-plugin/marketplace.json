@@ -4,12 +4,12 @@
     "name": "Yuki Hayashi"
   },
   "metadata": {
-    "description": "Expo / EAS製iOSアプリのリリースを支援するAgent Skillsプラグイン"
+    "description": "Expo / EAS製iOSアプリのリリースとApp Storeスクリーンショット撮影を支援するAgent Skillsプラグイン"
   },
   "plugins": [
     {
       "name": "expo-ios-release",
-      "description": "TestFlight配信、EAS Metadata反映、App Review提出を段階的に進める。",
+      "description": "TestFlight配信、MaestroによるApp Storeスクリーンショット撮影、EAS Metadata反映、App Review提出を段階的に進める。",
       "version": "0.1.0",
       "source": "./"
     }

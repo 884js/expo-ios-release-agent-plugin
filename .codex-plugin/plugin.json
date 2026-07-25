@@ -1,7 +1,7 @@
 {
   "name": "expo-ios-release",
   "version": "0.1.0",
-  "description": "Expo / EAS製iOSアプリのTestFlight配信、ストア情報更新、App Review提出を支援するプラグイン。",
+  "description": "Expo / EAS製iOSアプリのTestFlight配信、App Storeスクリーンショット撮影、ストア情報更新、App Review提出を支援するプラグイン。",
   "author": {
     "name": "Yuki Hayashi"
   },
@@ -13,13 +13,15 @@
     "eas",
     "ios",
     "testflight",
+    "maestro",
+    "app-store-screenshots",
     "app-store-connect"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Expo iOS Release",
-    "shortDescription": "EAS BuildからApp Review提出までを一貫して支援",
-    "longDescription": "Expo / EAS製iOSアプリの事前確認、バージョン更新、TestFlight提出、EAS Metadata反映、App Store Connectのビルド選択とApp Review提出を段階的に進めます。",
+    "shortDescription": "EAS Build、掲載画像撮影、App Review提出を支援",
+    "longDescription": "Expo / EAS製iOSアプリの事前確認、バージョン更新、TestFlight提出、MaestroによるApp Storeスクリーンショット撮影、EAS Metadata反映、App Store Connectのビルド選択とApp Review提出を段階的に進めます。",
     "developerName": "Yuki Hayashi",
     "category": "Developer Tools",
     "capabilities": [
@@ -30,6 +32,7 @@
       "このExpoアプリでiOSリリース環境をセットアップして",
       "iOSアプリをリリースしたい",
       "TestFlightへ新しいビルドを提出して",
+      "App Store用のスクリーンショットを自動撮影して",
       "App Storeのリリースノートを更新して",
       "処理済みビルドをApp Reviewへ提出して"
     ]

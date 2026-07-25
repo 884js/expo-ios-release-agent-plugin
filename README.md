@@ -1,6 +1,6 @@
 # Expo iOS Release Agent Plugin
 
-Expo / EAS製iOSアプリのリリース作業を、Codex・Claude Code・Cursorで再利用するためのAgent Skillsプラグインです。TestFlightへの提出からApp Reviewの申請までを、確認可能な段階に分けて進めます。
+Expo / EAS製iOSアプリのリリース作業を、Codex・Claude Code・Cursorで再利用するためのAgent Skillsプラグインです。TestFlightへの提出、App Storeスクリーンショットの撮影、App Reviewの申請を、確認可能な段階に分けて進めます。
 
 ## 収録スキル
 
@@ -9,6 +9,7 @@ Expo / EAS製iOSアプリのリリース作業を、Codex・Claude Code・Cursor
 | `setup` | 初期設定と共通のセットアップ診断 |
 | `ios-release` | リリース全体の進行と段階管理 |
 | `testflight` | バージョン確認、EAS Build、TestFlight提出 |
+| `appstore-screenshots` | MaestroによるApp Store掲載画像の撮影、検証、EAS Metadata用書き出し |
 | `appstore-info` | リリースノートやApp Store掲載情報の更新 |
 | `appstore-release` | App Store Connectのビルド選択とApp Review提出 |
 
@@ -58,8 +59,11 @@ node /path/to/plugin/scripts/doctor.mjs \
 - Apple Developer ProgramとApp Store Connectへの必要な権限
 - プロジェクトルートに`app.json`と`eas.json`
 - メタデータを反映する場合は`store.config.json`
+- スクリーンショットを撮影する場合はmacOS、Xcode、iOS Simulator、Maestro CLI 2.3.0以上
 
 詳しい設定は[プロジェクト要件](references/project-requirements.md)を参照してください。
+
+Maestroはプラグインへ同梱せず、`appstore-screenshots`の診断時に利用可能か確認します。他のリリーススキルでは必要ありません。
 
 ## 利用方法
 
@@ -132,6 +136,8 @@ node /path/to/plugin/scripts/install.mjs \
 ## 安全設計
 
 - 状態確認は読み取り専用で実行する
+- スクリーンショットは既存画像を上書きせず、撮影後にApple要件を検証する
+- EAS Metadata用書き出しとApp Store Connectへの反映は別々に確認する
 - ビルド、メタデータ反映、審査提出の前に対象と影響を提示する
 - App Review提出には`VERSION/BUILD`形式の確認文字列を要求する
 - 秘密鍵、APIトークン、JWTをログへ出さない
