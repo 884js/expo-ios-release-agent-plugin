@@ -37,8 +37,23 @@ node <plugin-root>/scripts/doctor.mjs \
 - Gitの未コミット差分
 - EASの直近iOSビルドと提出状態
 - App Store Connectの対象バージョン、処理済みビルド、審査状態
+- App Storeで前回公開されたバージョンとbuild番号
+- 前回公開ビルドに対応するGitコミットまたはリリースタグ
 
-App Store Connectの確認には`appstore-release`スキルのスクリプトを読み取り専用で使う。
+App Store Connectの確認には`appstore-release`スキルのスクリプトを読み取り専用で使う。前回公開versionとbuild番号は次で取得する。
+
+ユーザーが前回公開コミットを明示している場合は、そのrefが存在することを確認して差分基準にし、外部状態から再特定しない。
+
+```bash
+node <plugin-root>/skills/appstore-release/scripts/appstore-release.mjs \
+  --project-dir <project-root> \
+  --latest-released \
+  --json
+```
+
+取得した値でEAS Buildをversionとbuild番号の両方から絞り込み、`gitCommitHash`をリリースノートの差分基準にする。一致するEAS Buildがない場合は推測せず、リリースタグまたはユーザーが確認したコミットを使う。
+
+EAS BuildのJSONから扱うのはbuild ID、`appVersion`、`appBuildVersion`、`gitCommitHash`だけとする。artifactやlogの署名付きURLを報告へ含めない。
 
 スクリーンショットの撮影が必要な場合は、`appstore-screenshots`の`--check`も実行する。既存出力を検証済みとして扱う前に、対象ディレクトリへ`--validate`を実行する。
 
@@ -51,7 +66,7 @@ App Store Connectの確認には`appstore-release`スキルのスクリプトを
 - 対象バージョンとbuild番号
 - 使用するEASプロファイル
 - バージョン更新の有無
-- リリースノート更新の有無
+- リリースノート更新の有無と、差分の基準にする前回公開コミット
 - 新規ビルドが必要か
 - メタデータ反映が必要か
 - スクリーンショットの撮影または差し替えが必要か

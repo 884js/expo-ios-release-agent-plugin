@@ -10,7 +10,7 @@
     {
       "name": "expo-ios-release",
       "description": "TestFlight配信、MaestroによるApp Storeスクリーンショット撮影、EAS Metadata反映、App Review提出を段階的に進める。",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "source": "./"
     }
   ]

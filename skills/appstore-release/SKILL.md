@@ -61,6 +61,17 @@ node <skill-directory>/scripts/appstore-release.mjs \
 
 build番号を省略した場合は、対象バージョンで処理済みの最新ビルドを確認対象にする。
 
+リリースノートの差分基準を特定する場合は、現在公開中のversionとbuild番号だけをJSONで取得できる。
+
+```bash
+node <skill-directory>/scripts/appstore-release.mjs \
+  --project-dir <project-root> \
+  --latest-released \
+  --json
+```
+
+この実行はApp Store Connectの状態を変更しない。公開済みversionが見つからない場合は推測した値を返さず失敗する。
+
 次を確認する。
 
 - App Storeバージョン

@@ -3,8 +3,8 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "パッチバージョンへ上げて、iOSビルドをTestFlightへ自動提出して",
-      "expected_output": "検証、バージョンとリリースノートの確認、実行同意を経てEAS Buildと自動提出を行う",
+      "prompt": "前回公開版のコミットはHEAD~1です。パッチバージョンへ上げて、iOSビルドをTestFlightへ自動提出して",
+      "expected_output": "確認済みのHEAD~1を基準にリリースノートを作り、fixtureでは外部操作を行わず検証と実行計画までを提示する",
       "files": ["fixtures/sample-expo-app"]
     },
     {

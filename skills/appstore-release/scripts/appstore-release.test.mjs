@@ -58,6 +58,7 @@ async function createWorkspace({
 
 async function createMockApi({
   expectedAuthorization = 'Bearer test-token',
+  includeReleasedVersion = true,
 } = {}) {
   const requests = [];
   let submissionCreated = false;
@@ -99,7 +100,38 @@ async function createMockApi({
               appVersionState: 'PREPARE_FOR_SUBMISSION',
             },
           },
+          ...(includeReleasedVersion
+            ? [
+                {
+                  type: 'appStoreVersions',
+                  id: 'version-released',
+                  attributes: {
+                    versionString: '2.3.0',
+                    platform: 'IOS',
+                    appVersionState: 'READY_FOR_DISTRIBUTION',
+                    earliestReleaseDate: '2026-06-01T00:00:00Z',
+                    createdDate: '2026-05-01T00:00:00Z',
+                  },
+                  relationships: {
+                    build: { data: { type: 'builds', id: 'build-41' } },
+                  },
+                },
+              ]
+            : []),
         ],
+        included: includeReleasedVersion
+          ? [
+              {
+                type: 'builds',
+                id: 'build-41',
+                attributes: {
+                  version: '41',
+                  processingState: 'VALID',
+                  uploadedDate: '2026-05-20T00:00:00Z',
+                },
+              },
+            ]
+          : [],
       });
     } else if (request.method === 'GET' && url.pathname === '/v1/builds') {
       send(200, {
@@ -286,6 +318,47 @@ test('通常実行では状態確認だけを行う', async () => {
     const { stdout } = await runScript(workspace, api.baseUrl);
     assert.match(stdout, /App Storeバージョン: 2\.4\.0/);
     assert.match(stdout, /状態確認のみ/);
+    assert.equal(
+      api.requests.some((request) => request.method !== 'GET'),
+      false,
+    );
+  } finally {
+    await api.close();
+  }
+});
+
+test('前回公開versionとbuild番号をJSONで読み取る', async () => {
+  const workspace = await createWorkspace();
+  const api = await createMockApi();
+
+  try {
+    const { stdout } = await runScript(workspace, api.baseUrl, [
+      '--latest-released',
+      '--json',
+    ]);
+    assert.deepEqual(JSON.parse(stdout), {
+      version: '2.3.0',
+      buildNumber: '41',
+      state: 'READY_FOR_DISTRIBUTION',
+    });
+    assert.equal(
+      api.requests.some((request) => request.method !== 'GET'),
+      false,
+    );
+  } finally {
+    await api.close();
+  }
+});
+
+test('公開済みversionがない場合は推測しない', async () => {
+  const workspace = await createWorkspace();
+  const api = await createMockApi({ includeReleasedVersion: false });
+
+  try {
+    await assert.rejects(
+      runScript(workspace, api.baseUrl, ['--latest-released', '--json']),
+      /公開済みのiOSバージョンが見つかりません/,
+    );
     assert.equal(
       api.requests.some((request) => request.method !== 'GET'),
       false,

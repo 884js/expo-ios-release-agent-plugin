@@ -58,7 +58,35 @@ node <plugin-root>/scripts/doctor.mjs \
 
 バージョンを変更した場合、またはユーザーが希望した場合にリリースノートの下書きを作る。
 
-前回のバージョン変更以降のコミットと差分を読み、ユーザーに見える変更だけを次のカテゴリへ整理する。
+差分の基準は、単なるバージョン変更コミットではなく、前回App Storeで公開されたバージョンに含まれる最後のGitコミットとする。
+
+ユーザーが前回公開コミットを明示している場合は、そのrefが存在することを確認して基準にする。外部状態からの再特定は不要。
+
+1. 次の読み取り専用コマンドで、前回公開バージョンとbuild番号を確認する
+   ```bash
+   node <plugin-root>/skills/appstore-release/scripts/appstore-release.mjs \
+     --project-dir <project-root> \
+     --latest-released \
+     --json
+   ```
+2. 取得したversionとbuild番号でEAS Buildを絞り込む
+   ```bash
+   eas build:list \
+     --platform ios \
+     --status finished \
+     --app-version <version> \
+     --app-build-version <build-number> \
+     --limit 5 \
+     --json \
+     --non-interactive
+   ```
+3. 一致したEAS Buildの`gitCommitHash`を基準にする。見つからない場合だけ、公開versionと一致するリリースタグ、ユーザーが確認したコミットの順で特定する
+4. 基準コミットを一意に特定できない場合は推測せず、候補を提示してユーザーへ確認する
+5. `git log --oneline <baseline>..HEAD`と`git diff --stat <baseline>..HEAD`を読み、必要な差分を確認する
+
+EAS BuildのJSONから扱うのはbuild ID、`appVersion`、`appBuildVersion`、`gitCommitHash`だけとする。artifactやlogの署名付きURLを報告へ含めない。
+
+特定した公開基準から現在までの差分を読み、ユーザーに見える変更だけを次のカテゴリへ整理する。
 
 ```text
 新機能
@@ -75,6 +103,7 @@ node <plugin-root>/scripts/doctor.mjs \
 - 内部リファクタ、CI、依存関係更新、スキル追加は含めない
 - 1項目は短く、体言止めまたは動詞止めで揃える
 - ロケールはユーザー指定、`IOS_RELEASE_LOCALE`、`ja`の順で決める
+- 公開完了後は、次回の差分基準に使うリリースタグを提案する。ユーザーの同意なくタグを作成・pushしない
 
 下書きを提示し、採用、編集、変更しない、のいずれかを確認する。採用された場合だけ`store.config.json`へ反映する。
 

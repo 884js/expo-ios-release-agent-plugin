@@ -3,8 +3,8 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "次のiOS版をTestFlightへ上げ、リリースノートを反映して審査提出まで進めたい",
-      "expected_output": "現在地を読み取り、testflight、appstore-info、appstore-releaseの必要な段階を順番に提示する",
+      "prompt": "前回公開版のコミットはHEAD~1です。次のiOS版をTestFlightへ上げ、リリースノートを反映して審査提出まで進めたい",
+      "expected_output": "確認済みのHEAD~1を差分基準にし、fixtureでは外部操作を行わずtestflight、appstore-info、appstore-releaseの計画を提示する",
       "files": ["fixtures/sample-expo-app"]
     },
     {
@@ -17,6 +17,12 @@
       "id": 3,
       "prompt": "スクリーンショットだけ新しい端末サイズに差し替えたい",
       "expected_output": "リリース全体を開始せずappstore-screenshotsで撮影・検証し、App Store Connectへのアップロードは対象外と案内する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 4,
+      "prompt": "前回どのコミットを公開したかわからないけど、今回のリリースノートを作って",
+      "expected_output": "fixtureでは前回公開buildを取得できないため基準を推測せず、候補または確認済みコミットの提示を求める",
       "files": ["fixtures/sample-expo-app"]
     }
   ]

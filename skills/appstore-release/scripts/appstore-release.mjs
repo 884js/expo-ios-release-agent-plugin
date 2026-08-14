@@ -17,10 +17,16 @@ const EDITABLE_STATES = new Set([
   'REJECTED',
   'METADATA_REJECTED',
 ]);
+const CURRENT_RELEASE_STATES = new Set([
+  'READY_FOR_DISTRIBUTION',
+  'READY_FOR_SALE',
+]);
+const HISTORICAL_RELEASE_STATES = new Set(['REPLACED_WITH_NEW_VERSION']);
 
 function printHelp() {
   console.log(`Usage:
   node appstore-release.mjs [--version VERSION] [--build-number NUMBER]
+  node appstore-release.mjs --latest-released [--json]
   node appstore-release.mjs --submit --confirm VERSION/BUILD
 
 Options:
@@ -28,6 +34,8 @@ Options:
   --profile        eas.jsonのbuild／submitプロファイル。既定はEAS_RELEASE_PROFILEまたはtestflight
   --version        app.jsonとは異なるApp Storeバージョンを確認する
   --build-number   対象build番号。省略時はapp.jsonの値または最新の処理済みビルド
+  --latest-released App Storeで現在公開中のversionとbuild番号を読み取る
+  --json           --latest-releasedの結果をJSONで出力する
   --submit         ビルドを紐付けてApp Reviewへ提出する
   --confirm        VERSION/BUILD形式の実行確認
   --help           このヘルプを表示する`);
@@ -36,6 +44,8 @@ Options:
 function parseArgs(argv) {
   const options = {
     submit: false,
+    latestReleased: false,
+    json: false,
     confirm: null,
     projectDir: null,
     profile: null,
@@ -48,6 +58,10 @@ function parseArgs(argv) {
 
     if (arg === '--submit') {
       options.submit = true;
+    } else if (arg === '--latest-released') {
+      options.latestReleased = true;
+    } else if (arg === '--json') {
+      options.json = true;
     } else if (arg === '--help') {
       printHelp();
       process.exit(0);
@@ -71,6 +85,13 @@ function parseArgs(argv) {
     } else {
       throw new Error(`不明なオプションです: ${arg}`);
     }
+  }
+
+  if (options.submit && options.latestReleased) {
+    throw new Error('--submitと--latest-releasedは同時に指定できません。');
+  }
+  if (options.json && !options.latestReleased) {
+    throw new Error('--jsonは--latest-releasedと一緒に指定してください。');
   }
 
   return options;
@@ -334,6 +355,87 @@ async function findAppStoreVersion(request, appId, version) {
   );
 }
 
+function releaseState(version) {
+  return (
+    version.attributes?.appVersionState ??
+    version.attributes?.appStoreState ??
+    'UNKNOWN'
+  );
+}
+
+function compareReleasedVersions(left, right) {
+  const leftDate = Date.parse(
+    left.attributes?.earliestReleaseDate ?? left.attributes?.createdDate ?? '',
+  );
+  const rightDate = Date.parse(
+    right.attributes?.earliestReleaseDate ?? right.attributes?.createdDate ?? '',
+  );
+
+  if (Number.isFinite(leftDate) && Number.isFinite(rightDate)) {
+    return rightDate - leftDate;
+  }
+
+  return String(right.attributes?.versionString ?? '').localeCompare(
+    String(left.attributes?.versionString ?? ''),
+    undefined,
+    { numeric: true },
+  );
+}
+
+async function findLatestReleasedVersion(request, appId) {
+  const response = await request(
+    withQuery(`/v1/apps/${appId}/appStoreVersions`, {
+      'filter[platform]': 'IOS',
+      include: 'build',
+      'fields[appStoreVersions]':
+        'platform,versionString,appStoreState,appVersionState,earliestReleaseDate,createdDate,build',
+      'fields[builds]': 'version,uploadedDate,processingState',
+      limit: '200',
+    }),
+  );
+  const versions = (response?.data ?? []).filter(
+    (item) => item.attributes?.platform === 'IOS',
+  );
+  const current = versions
+    .filter((item) => CURRENT_RELEASE_STATES.has(releaseState(item)))
+    .sort(compareReleasedVersions);
+  const historical = versions
+    .filter((item) => HISTORICAL_RELEASE_STATES.has(releaseState(item)))
+    .sort(compareReleasedVersions);
+  const version = current[0] ?? historical[0];
+
+  if (!version) {
+    throw new Error(
+      'App Store Connectに公開済みのiOSバージョンが見つかりません。',
+    );
+  }
+
+  const buildId =
+    version.relationships?.build?.data?.id ??
+    (await getCurrentBuildId(request, version.id));
+  if (!buildId) {
+    throw new Error(
+      `公開済みのiOS ${version.attributes?.versionString ?? ''}にbuildが紐付いていません。`,
+    );
+  }
+
+  const includedBuild = (response?.included ?? []).find(
+    (item) => item.type === 'builds' && item.id === buildId,
+  );
+  const build =
+    includedBuild ?? (await request(`/v1/builds/${buildId}`))?.data ?? null;
+  const buildNumber = build?.attributes?.version;
+  if (!buildNumber) {
+    throw new Error('公開済みbuildの番号を取得できません。');
+  }
+
+  return {
+    version: String(version.attributes.versionString),
+    buildNumber: String(buildNumber),
+    state: releaseState(version),
+  };
+}
+
 async function findBuild(request, appId, version, buildNumber) {
   const params = {
     'filter[app]': appId,
@@ -467,14 +569,20 @@ async function main() {
     ? String(storeConfig.apple.version)
     : null;
 
-  if (appVersion && storeVersion && appVersion !== storeVersion && !options.version) {
+  if (
+    appVersion &&
+    storeVersion &&
+    appVersion !== storeVersion &&
+    !options.version &&
+    !options.latestReleased
+  ) {
     throw new Error(
       `app.json (${appVersion}) と store.config.json (${storeVersion}) のバージョンが一致していません。`,
     );
   }
 
   const version = options.version ?? appVersion ?? storeVersion;
-  if (!version) {
+  if (!version && !options.latestReleased) {
     throw new Error(
       '対象バージョンを取得できません。app.jsonにexpo.versionを設定するか、--versionを指定してください。',
     );
@@ -510,16 +618,36 @@ async function main() {
 
     console.log('Fixtureモード: 外部操作は無効です。');
     console.log(`EASプロファイル: ${profile}`);
-    console.log(`App Storeバージョン: ${version}`);
-    console.log(
-      `build番号: ${configuredBuildNumber ?? 'App Store Connectでの確認が必要'}`,
-    );
+    if (options.latestReleased) {
+      console.log(
+        '前回公開バージョンとbuild番号はApp Store Connectでの確認が必要です。',
+      );
+    } else {
+      console.log(`App Storeバージョン: ${version}`);
+      console.log(
+        `build番号: ${configuredBuildNumber ?? 'App Store Connectでの確認が必要'}`,
+      );
+    }
     console.log('App Store Connect APIへの接続は行っていません。');
     return;
   }
 
   const authentication = await resolveAuthentication(appConfig);
   const request = createApiClient(authentication.token);
+  if (options.latestReleased) {
+    const latestReleased = await findLatestReleasedVersion(request, appId);
+    if (options.json) {
+      console.log(JSON.stringify(latestReleased));
+    } else {
+      console.log(`認証: ${authentication.source}`);
+      console.log(`公開中のApp Storeバージョン: ${latestReleased.version}`);
+      console.log(`build番号: ${latestReleased.buildNumber}`);
+      console.log(`バージョン状態: ${latestReleased.state}`);
+      console.log('状態確認のみ。App Store Connectへの変更は行っていません。');
+    }
+    return;
+  }
+
   const appStoreVersion = await findAppStoreVersion(request, appId, version);
   const build = await findBuild(
     request,

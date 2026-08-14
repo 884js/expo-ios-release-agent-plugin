@@ -50,7 +50,26 @@ node <plugin-root>/scripts/doctor.mjs \
 
 ## 3. リリースノートを更新する
 
-ユーザーが希望した場合だけ、前回のバージョン変更以降のコミットと差分から下書きを作る。
+ユーザーが希望した場合だけ、前回App Storeで公開されたバージョンに含まれる最後のGitコミットから現在までの差分で下書きを作る。
+
+ユーザーが前回公開コミットを明示している場合は、そのrefが存在することを確認して基準にする。外部状態からの再特定は不要。
+
+前回公開versionとbuild番号は、次の読み取り専用コマンドで取得する。
+
+```bash
+node <plugin-root>/skills/appstore-release/scripts/appstore-release.mjs \
+  --project-dir <project-root> \
+  --latest-released \
+  --json
+```
+
+取得した値で`eas build:list --platform ios --status finished --app-version <version> --app-build-version <build-number> --limit 5 --json --non-interactive`を実行し、一致したEAS Buildの`gitCommitHash`を基準にする。見つからない場合だけ、公開versionと一致するリリースタグ、ユーザーが確認したコミットの順で特定する。
+
+EAS BuildのJSONから扱うのはbuild ID、`appVersion`、`appBuildVersion`、`gitCommitHash`だけとする。artifactやlogの署名付きURLを報告へ含めない。
+
+単なるバージョン変更コミットを基準にしない。一意に特定できない場合は推測せず、候補を提示してユーザーへ確認する。
+
+基準を確定したら、`git log --oneline <baseline>..HEAD`と`git diff --stat <baseline>..HEAD`を読み、必要な差分を確認する。
 
 ```text
 新機能
@@ -66,6 +85,7 @@ node <plugin-root>/scripts/doctor.mjs \
 - 該当しないカテゴリは省略する
 - ユーザーに見えない内部変更は含めない
 - 内容を提示し、合意後にだけ設定ファイルを編集する
+- 公開完了後にリリースタグを付ける場合も、作成・push前にユーザーの同意を得る
 
 ## 4. 反映前に確認する
 
