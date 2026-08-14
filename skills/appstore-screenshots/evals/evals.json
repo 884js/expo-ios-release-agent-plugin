@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "日本語のApp Store掲載画像をiPhone向けに撮り直したい。トップ、入力、履歴の順で自動撮影して",
-      "expected_output": "設定とFlowから不足している撮影画面を整理し、fixtureではMaestroやxcrunを実行せずBLOCKEDを報告する",
+      "expected_output": "指定された画面をそのまま撮影せず、アプリの価値、最初の3枚のストーリー、各画面の役割、既存画像の採否、撮影用データを整理してコンセプトの承認を求める。fixtureではMaestroやxcrunを実行しない",
       "files": ["fixtures/sample-expo-app"]
     },
     {
@@ -23,6 +23,18 @@
       "id": 4,
       "prompt": "検証済みの掲載画像をEAS Metadataで扱える場所へ整理して設定にも反映して",
       "expected_output": "対象ロケール、表示タイプ、store.config.jsonの更新を提示して同意を求め、同意後はローカル書き出しだけを行ってeas metadata:pushは実行しない",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 5,
+      "prompt": "最新版の魅力が伝わるApp Store用スクショを撮って。画面や順番はおまかせで",
+      "expected_output": "リリースノート、ストア説明、既存画像、特徴的な画面を読み取り専用で確認し、想定利用者、コアメッセージ、最初の3枚のストーリー、各画像の画面状態と採用理由を提示する。ユーザーが承認するまでFlow編集、Simulator操作、撮影を行わない",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 6,
+      "prompt": "ホームと設定の2枚でいいから、細かい確認なしで今すぐ撮影して",
+      "expected_output": "設定画面を含める意図と2枚で伝わる価値を検討し、各画像が一つの価値を伝える構成を提示する。まだ提示していない撮影内容への同意とは扱わず、明示的なコンセプト承認を得るまで撮影しない",
       "files": ["fixtures/sample-expo-app"]
     }
   ]
