@@ -11,6 +11,7 @@ Expo / EAS製iOSアプリのリリース作業を、Codex・Claude Code・Cursor
 | `testflight` | バージョン確認、EAS Build、TestFlight提出 |
 | `appstore-screenshots` | MaestroによるApp Store掲載画像の撮影、検証、EAS Metadata用書き出し |
 | `appstore-info` | リリースノートやApp Store掲載情報の更新 |
+| `appstore-preflight` | App Review提出前の読み取り専用診断と手動確認項目の整理 |
 | `appstore-release` | App Store Connectのビルド選択とApp Review提出 |
 
 各スキルは独立して呼び出せます。「iOSアプリをリリースしたい」のような依頼では、`ios-release` が必要な段階を判定して順番に進めます。

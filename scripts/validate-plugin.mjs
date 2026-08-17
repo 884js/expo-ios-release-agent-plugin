@@ -12,6 +12,7 @@ const skillNames = [
   'testflight',
   'appstore-screenshots',
   'appstore-info',
+  'appstore-preflight',
   'appstore-release',
 ];
 

@@ -37,7 +37,11 @@ test('projectスコープでプロジェクト内にスキルを配置する', a
 
   await runInstaller(project);
 
-  for (const skillName of ['setup', 'appstore-screenshots']) {
+  for (const skillName of [
+    'setup',
+    'appstore-screenshots',
+    'appstore-preflight',
+  ]) {
     const destination = path.join(
       project,
       '.agents',

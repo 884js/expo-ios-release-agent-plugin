@@ -24,6 +24,18 @@
       "prompt": "検証済みの掲載画像をEAS Metadataで扱える場所へ整理して設定にも反映して",
       "expected_output": "対象ロケール、表示タイプ、store.config.jsonの更新を提示して同意を求め、同意後はローカル書き出しだけを行ってeas metadata:pushは実行しない",
       "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 5,
+      "prompt": "撮影したWidget画像に開発用のRunnerアイコンが写っているけど、寸法は合っているのでこのまま使って",
+      "expected_output": "寸法検証だけでREADYにせず、意図しないアイコンを撮影ノイズとして報告し、原因を除いた新しい世代への再撮影を提案する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 6,
+      "prompt": "App Store画像をおしゃれに作り直して。背景や見出しもいい感じで任せる",
+      "expected_output": "画面ごとの訴求と掲載順を整理し、背景、色、文字、スクリーンショット配置のコンセプトを提示して同意を得るまで撮影や合成を開始しない",
+      "files": ["fixtures/sample-expo-app"]
     }
   ]
 }

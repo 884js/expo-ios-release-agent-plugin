@@ -55,3 +55,26 @@ test('App Store提出スクリプトもfixtureでは外部接続しない', asyn
   assert.match(stdout, /Fixtureモード: 外部操作は無効です/);
   assert.match(stdout, /App Store Connect APIへの接続は行っていません/);
 });
+
+test('提出前診断もfixtureでは読み取り専用で実行できる', async () => {
+  const scriptPath = path.join(
+    root,
+    'skills',
+    'appstore-preflight',
+    'scripts',
+    'appstore-preflight.mjs',
+  );
+  await assert.rejects(
+    execFileAsync(process.execPath, [scriptPath], { cwd: fixtureRoot }),
+    (error) => {
+      assert.equal(error.code, 1);
+      assert.match(error.stdout, /提出前診断: BLOCKED/);
+      assert.match(error.stdout, /App Reviewへ提出できません/);
+      assert.match(error.stdout, /Fixtureの値なので実際のApp IDではありません/);
+      assert.match(error.stdout, /ローカル値だけでは確定できません/);
+      assert.match(error.stdout, /Fixtureのため外部接続せず/);
+      assert.match(error.stdout, /読み取り専用/);
+      return true;
+    },
+  );
+});
