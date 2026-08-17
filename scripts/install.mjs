@@ -25,6 +25,7 @@ const skillNames = [
   'testflight',
   'appstore-screenshots',
   'appstore-info',
+  'appstore-preflight',
   'appstore-release',
 ];
 const supportedTargets = new Set(['codex', 'claude', 'cursor', 'all']);

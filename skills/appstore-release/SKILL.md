@@ -26,6 +26,12 @@ node <plugin-root>/scripts/doctor.mjs \
 
 `NEEDS_SETUP`なら`setup`スキルで不足項目を案内する。`BLOCKED`ならAPIへ接続しない。状態確認の直前に`--live`を付け、EASログインも確認する。
 
+## 提出前診断を完了する
+
+App Review提出を依頼された場合は、先に`appstore-preflight`スキルでローカル設定、掲載情報、審査情報、手動確認事項を確認する。
+
+`BLOCKED`がある場合や、提出可否に関わる`MANUAL`が未確認の場合は提出しない。状態確認だけの依頼では提出前診断を必須にしない。
+
 ## 認証
 
 次の優先順位で認証する。
@@ -138,4 +144,5 @@ node <skill-directory>/scripts/appstore-release.mjs \
 
 - 新しいビルドやTestFlight提出: `testflight`
 - リリースノートなどの反映: `appstore-info`
+- App Review提出前の診断: `appstore-preflight`
 - ビルド選択とApp Review提出: このスキル

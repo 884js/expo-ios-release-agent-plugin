@@ -1,0 +1,4 @@
+interface:
+  display_name: "App Store Preflight"
+  short_description: "App Review提出前の未解決項目を読み取り専用で診断"
+  default_prompt: "Use $appstore-preflight to App Review提出前の状態を読み取り専用で診断してください。"

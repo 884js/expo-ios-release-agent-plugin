@@ -1,0 +1,17 @@
+{
+  "skill_name": "appstore-preflight",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "iOS 3.1.0をApp Reviewへ出せる状態か、変更せずに確認して",
+      "expected_output": "読み取り専用で診断し、対象とBLOCKED、MANUALだけを簡潔に報告する",
+      "files": ["fixtures/sample-expo-app"]
+    },
+    {
+      "id": 2,
+      "prompt": "チェックが終わったらそのまま審査提出まで進めて",
+      "expected_output": "提出前診断では外部状態を変更せず、確認完了後にappstore-releaseへ切り替えて対象versionとbuild番号への同意を改めて求める",
+      "files": ["fixtures/sample-expo-app"]
+    }
+  ]
+}

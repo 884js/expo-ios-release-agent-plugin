@@ -81,7 +81,8 @@ EAS BuildのJSONから扱うのはbuild ID、`appVersion`、`appBuildVersion`、
 1. `testflight`: 事前検証、バージョン調整、EAS Build、TestFlight提出
 2. `appstore-screenshots`: 必要な場合だけ掲載画像を撮影・検証し、EAS Metadata用にローカル書き出し
 3. `appstore-info`: リリースノートやスクリーンショットなどのApp Store掲載情報反映
-4. `appstore-release`: 処理済みビルドの選択、App Review提出
+4. `appstore-preflight`: 提出前の読み取り専用診断と手動確認
+5. `appstore-release`: 処理済みビルドの選択、App Review提出
 
 新しいビルドを作成した場合は、EAS BuildとEAS Submitの完了を確認する。Apple側でビルドが処理中の場合は、適度な間隔で状態を確認する。ユーザーが一連の完了を求めている時は、App Reviewへ提出できる状態になるまで追跡する。
 
@@ -103,4 +104,5 @@ App Store Connectのアプリページと、必要に応じてEASのビルド／
 - TestFlightへの配信だけ: `testflight`
 - スクリーンショットの撮影と検証だけ: `appstore-screenshots`
 - App Store掲載情報の更新だけ: `appstore-info`
+- App Review提出前の診断だけ: `appstore-preflight`
 - 処理済みビルドの審査提出だけ: `appstore-release`

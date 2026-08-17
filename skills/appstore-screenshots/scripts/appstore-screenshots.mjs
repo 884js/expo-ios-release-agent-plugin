@@ -345,6 +345,24 @@ export function versionAtLeast(version, minimum) {
   return true;
 }
 
+export function createMaestroTestArgs({
+  deviceId,
+  bundleIdentifier,
+  testOutputDir,
+  flowPath,
+}) {
+  return [
+    '--device',
+    deviceId,
+    'test',
+    '--no-reinstall-driver',
+    '-e',
+    `APP_ID=${bundleIdentifier}`,
+    `--test-output-dir=${testOutputDir}`,
+    flowPath,
+  ];
+}
+
 async function readMaestroVersion(maestroPath) {
   const { stdout, stderr } = await execFileAsync(maestroPath, ['--version']);
   const match = /(\d+)\.(\d+)\.(\d+)/.exec(`${stdout}\n${stderr}`);
@@ -1038,15 +1056,12 @@ async function runCapture(options) {
     );
     const { stdout } = await execFileAsync(
       maestroPath,
-      [
-        '--device',
-        device.udid,
-        'test',
-        '-e',
-        `APP_ID=${plan.bundleIdentifier}`,
-        `--test-output-dir=${relativeOutput}`,
-        target.flowPath,
-      ],
+      createMaestroTestArgs({
+        deviceId: device.udid,
+        bundleIdentifier: plan.bundleIdentifier,
+        testOutputDir: relativeOutput,
+        flowPath: target.flowPath,
+      }),
       {
         cwd: plan.projectDir,
         env: {

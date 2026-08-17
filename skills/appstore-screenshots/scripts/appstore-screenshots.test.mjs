@@ -16,6 +16,7 @@ import { promisify } from 'node:util';
 import { deflateSync } from 'node:zlib';
 
 import {
+  createMaestroTestArgs,
   ensureSafeWritePath,
   finalizeMaestroOutput,
   inspectPngBuffer,
@@ -166,6 +167,27 @@ test('Maestro CLI 2.3.0以上だけを許可する', () => {
   assert.equal(versionAtLeast([2, 3, 0], [2, 3, 0]), true);
   assert.equal(versionAtLeast([2, 5, 1], [2, 3, 0]), true);
   assert.equal(versionAtLeast([2, 2, 9], [2, 3, 0]), false);
+});
+
+test('撮影時にMaestro Driverを再インストールしない', () => {
+  assert.deepEqual(
+    createMaestroTestArgs({
+      deviceId: 'SIMULATOR-UDID',
+      bundleIdentifier: 'com.example.capture',
+      testOutputDir: 'screenshots/report',
+      flowPath: '.maestro/capture.yml',
+    }),
+    [
+      '--device',
+      'SIMULATOR-UDID',
+      'test',
+      '--no-reinstall-driver',
+      '-e',
+      'APP_ID=com.example.capture',
+      '--test-output-dir=screenshots/report',
+      '.maestro/capture.yml',
+    ],
+  );
 });
 
 test('撮影ロケールを既存のEAS Metadataロケールへ解決する', () => {
